@@ -1,42 +1,45 @@
-import { createContext,useState } from "react"
+import { createContext, useState } from "react";
 
+export const ShoppingCartContext = createContext();
 
-export const ShoppingCartContext = createContext()
+export const ShoppingCartProvider = ({ children }) => {
+  //Shopping Cart - Increment Quantity
+  const [count, setCount] = useState(0);
 
+  //Product Detail - Show-Close
+  const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
+  const openProductDetail = () => setIsProductDetailOpen(true);
+  const closeProductDetail = () => setIsProductDetailOpen(false);
 
-export const ShoppingCartProvider = ({children}) => {
-   
-   //Shopping Cart - Increment Quantity
-    const [count,setCount] = useState(0);
+  //Product Detail - Show Product
+  const [productToShow, setProductToShow] = useState({});
 
-    //Product Detail - Show-Close
-   const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
-   const openProductDetail = ()=> setIsProductDetailOpen(true)
-   const closeProductDetail = ()=> setIsProductDetailOpen(false)
-   
+  //Shopping cart - add products to cart
+  const [cartProducts, setCartProducts] = useState([]);
 
-      //Product Detail - Show Product
-   const [productToShow, setProductToShow] = useState({});
+  //checkout side menu - Show-Close
+  const [isCheckoutSideMenuOpen, setIsCheckoutSideMenuOpen] = useState(false);
+  const openCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(true);
+  const closeCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(false);
 
-
-   //Shopping cart - add products to cart
-   const [cartProducts, setCartProducts] = useState([]);
-
-   
-   return(
-        <ShoppingCartContext.Provider value={{
-            count,
-            setCount,
-            isProductDetailOpen,
-            openProductDetail,
-            closeProductDetail,
-            productToShow,
-            setProductToShow,
-            cartProducts,
-            setCartProducts,
-        }}>
-            {children}
-        </ShoppingCartContext.Provider>
-        
-    )
-}
+  return (
+    <ShoppingCartContext.Provider
+      value={{
+        count,
+        setCount,
+        isProductDetailOpen,
+        openProductDetail,
+        closeProductDetail,
+        productToShow,
+        setProductToShow,
+        cartProducts,
+        setCartProducts,
+        isCheckoutSideMenuOpen,
+        openCheckoutSideMenu,
+        closeCheckoutSideMenu,
+      }}
+    >
+      {children}
+    </ShoppingCartContext.Provider>
+  );
+};
