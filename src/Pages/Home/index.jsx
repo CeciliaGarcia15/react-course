@@ -11,7 +11,7 @@ function Home() {
       .then((response) => response.json())
       .then((data) => setItems(data));
   }, []);
-  console.log(items);
+  
   return (
     <Layout>
       Home
