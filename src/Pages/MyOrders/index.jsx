@@ -11,18 +11,10 @@ function MyOrders() {
   
   return (
       <Layout>
-        {/* <div className="relative flex items-center justify-center w-80">
-        <Link to='/my-orders' className="absolute left-0">
-        <ChevronLeftIcon 
-          className="text-black cursor-pointer size-6"
-          />
-        </Link>
-        
-        
-          
-          
-        </div> */}
-    <h1>My orders</h1>
+        <div className="relative flex items-center justify-center w-80">
+          <h1 className="text-xl font-medium">My Orders</h1>
+        </div>
+    
     {
       context.order.map((order,index)=>(
       <Link key={index} to={`/my-orders/${index}`}>
