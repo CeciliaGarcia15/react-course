@@ -88,7 +88,7 @@ const Navbar = () => {
                     <ShoppingBagIcon 
                     className="size-5"
                     />
-                <div>{context.count}</div>
+                <div>{context.cartProducts.length}</div>
 
 
 

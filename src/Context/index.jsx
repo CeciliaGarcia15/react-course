@@ -43,6 +43,7 @@ export const ShoppingCartProvider = ({ children }) => {
       .then((response) => response.json())
       .then((data) => setItems(data));
   }, []);
+
   
   const filteredItemsByTitle = (items,searchByTitle) => {
     return items?.filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
@@ -74,7 +75,7 @@ export const ShoppingCartProvider = ({ children }) => {
     if(searchByTitle && searchByCategory) setFilteredItems(filterBy('BY_TITLE_AND_CATEGORY',items,searchByTitle,searchByCategory))
     if(searchByTitle && !searchByCategory) setFilteredItems(filterBy('BY_TITLE',items,searchByTitle,searchByCategory))
     if(!searchByTitle && searchByCategory) setFilteredItems(filterBy('BY_CATEGORY',items,searchByTitle,searchByCategory))
-    if(!searchByTitle && !searchByCategory) setFilteredItems(filterBy(NULL,items,searchByTitle,searchByCategory))
+    if(!searchByTitle && !searchByCategory) setFilteredItems(filterBy(null,items,searchByTitle,searchByCategory))
 
     }, [items,searchByTitle,searchByCategory]);
 

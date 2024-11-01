@@ -24,7 +24,9 @@ const CheckoutSideMenu = () => {
     };
 
     context.setOrder([...context.order, orderToAdd]);
+    //limpia los estados
     context.setCartProducts([]);
+    context.setSearchByTitle(null);
   };
   return (
     <aside
