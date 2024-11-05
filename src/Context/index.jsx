@@ -1,8 +1,40 @@
 import { createContext, useState, useEffect } from "react";
+import { json } from "react-router-dom";
 
 export const ShoppingCartContext = createContext();
 
+
+export const initializeLocalStorage = () => {
+ //crea los valores en el localstorage
+  const accountInLocalStorage = localStorage.getItem('account')
+  const signOutInLocalStorage = localStorage.getItem('sign-out')
+
+  let parsedAccount
+  let parsedSignOut
+
+  //dependiendo del valor setea algo por defecto
+  if(!accountInLocalStorage) {
+    localStorage.setItem('account',JSON.stringify({}))
+    parsedAccount = {}
+  }else{
+    parsedAccount = JSON.parse(accountInLocalStorage)
+  }
+  if(!signOutInLocalStorage) {
+    localStorage.setItem('sign-out',JSON.stringify(false))
+    parsedSignOut = false
+  }else{
+    parsedSignOut = JSON.parse(signOutInLocalStorage)
+  }
+}
+
+
 export const ShoppingCartProvider = ({ children }) => {
+ //My Account
+ const [account, setAccount] = useState({})
+ const [signOut, setSignOut] = useState(false)
+
+ 
+ 
   //Shopping Cart - Increment Quantity
   const [count, setCount] = useState(0);
 
@@ -104,7 +136,11 @@ export const ShoppingCartProvider = ({ children }) => {
         setSearchByTitle,
         filteredItems,
         searchByCategory,
-        setSearchByCategory
+        setSearchByCategory,
+        account, 
+        setAccount,
+        signOut, 
+        setSignOut
 
       }}
     >

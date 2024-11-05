@@ -2,10 +2,72 @@ import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { ShoppingCartContext } from "../../Context";
 import { ShoppingBagIcon } from "@heroicons/react/24/solid";
+import { render } from "react-dom";
 
 const Navbar = () => {
     const context = useContext(ShoppingCartContext)
     const activeStyle = 'underline underline-offset-4';
+    
+    //Sign out
+    const signOut = localStorage.getItem('sign-out')
+    const parsedSignOut = JSON.parse(signOut)
+    const isUserSignOut = context.signOut || parsedSignOut 
+
+
+    const handleSignOut = () => {
+        const stringifiedSignOut = JSON.stringify(true)
+        localStorage.setItem('sign-out',stringifiedSignOut)
+        context.setSignOut(true)
+    }
+    const renderView = () => {
+        if(isUserSignOut){
+            return (
+                <li>
+                    <NavLink to='/sign-in' 
+                    className={({isActive}) => isActive ? activeStyle : undefined}
+                    onClick={() => handleSignOut()}
+                    >
+                        Sign out
+                    </NavLink>
+                </li>
+            )
+        }else{
+            <>
+                <li className="text-black/60">
+                github.com/CeciliaGarcia15
+                </li>
+                <li>
+                    <NavLink to='/my-orders' className={({isActive}) => isActive ? activeStyle : undefined}>
+                        My Orders
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/my-account' className={({isActive}) => isActive ? activeStyle : undefined}>
+                        My Account
+                    </NavLink>
+                </li>
+                <li>
+                    <NavLink to='/sign-in' 
+                    className={({isActive}) => isActive ? activeStyle : undefined}
+                    onClick={() => handleSignOut()}
+                    >
+                        Sign in
+                    </NavLink>
+                </li>
+                <li className="flex items-center">
+                    <ShoppingBagIcon 
+                    className="size-5"
+                    />
+                <div>{context.cartProducts.length}</div>
+
+
+
+                
+                </li>
+            </>
+        }
+    }
+    
     return(
         <nav className="fixed top-0 z-10 flex justify-between w-full px-8 py-5 text-sm font-light item-center">
             <ul className="flex gap-3 item-center">
@@ -66,35 +128,8 @@ const Navbar = () => {
             </ul>
 
             <ul className="flex items-center gap-3">
-                <li className="text-black/60">
-                github.com/CeciliaGarcia15
-                </li>
-                <li>
-                    <NavLink to='/my-orders' className={({isActive}) => isActive ? activeStyle : undefined}>
-                        My Orders
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to='/my-account' className={({isActive}) => isActive ? activeStyle : undefined}>
-                        My Account
-                    </NavLink>
-                </li>
-                <li>
-                    <NavLink to='/sign-in' className={({isActive}) => isActive ? activeStyle : undefined}>
-                        Sign In
-                    </NavLink>
-                </li>
-                <li className="flex items-center">
-                    <ShoppingBagIcon 
-                    className="size-5"
-                    />
-                <div>{context.cartProducts.length}</div>
-
-
-
                 
-                </li>
-                
+                {renderView()}
             </ul>
 
         </nav>
