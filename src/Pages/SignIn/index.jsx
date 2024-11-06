@@ -1,25 +1,39 @@
+import { useContext, useState } from "react"
 import { Link  } from "react-router-dom"
+import {ShoppingCartContext} from "../../Context"
 import Layout from "../../Components/Layout"
 
 
 function SignIn() {
+  const context = useContext(ShoppingCartContext)
+  const [view, setView] = useState('user-info')
+  //account
+  const account = localStorage.getItem('account')
+  const parsedAccount = JSON.parse(account)
+
+  //Has an account
+  const noAccountInLocalStorage = parsedAccount ? Object.keys(parsedAccount).length === 0 : true
+  const noAccountInLocalState = context.account ? Object.keys(context.account).length === 0 : true
+
+  const hasUserAnAccount = !noAccountInLocalStorage || !noAccountInLocalState
+
+  const renderLogIn = () => {
     return (
-      <Layout>
-        <h1 className="mb-6 text-xl font-medium text-center w-88">Welcome</h1>
         <div className="flex flex-col w-80">
           <p>
             <span className="text-sm font-light">Email: </span>
-            <span>Ceci@mail.com</span>
+            <span>{parsedAccount?.email}</span>
           </p>
           <p>
-          <span className="text-sm font-light">Email: </span>
-          <span>********</span>
+          <span className="text-sm font-light">Password: </span>
+          <span>{parsedAccount?.password}</span>
           </p>
           <Link
           to="/"
           >
             <button
             className="w-full py-3 mt-4 mb-2 text-white bg-black rounded-lg disabled:bg-black/40"
+            disabled={!hasUserAnAccount}
             >
               Log in
             </button>
@@ -29,10 +43,23 @@ function SignIn() {
           </div>
           <button
           className="py-3 mt-6 border border-black rounded-lg disabled:text-black/40 disabled:border-black/40"
+          onClick={() => setView('create-user-info')}
+          disabled={hasUserAnAccount}
           >
 Sign Up
           </button>
         </div>
+    )
+  }
+  const renderCreateUserInfo = () => {
+    //todo create render view
+  }
+   const renderView = () => view === 'create-user-info' ? renderCreateUserInfo() : renderLogIn()
+
+    return (
+      <Layout>
+        <h1 className="mb-6 text-xl font-medium text-center w-88">Welcome</h1>
+        {renderView()}
       </Layout>
     )
   }
