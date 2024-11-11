@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useState, useRef } from "react"
 import { Link  } from "react-router-dom"
 import {ShoppingCartContext} from "../../Context"
 import Layout from "../../Components/Layout"
@@ -7,6 +7,9 @@ import Layout from "../../Components/Layout"
 function SignIn() {
   const context = useContext(ShoppingCartContext)
   const [view, setView] = useState('user-info')
+  const form = useRef(null)
+  
+  
   //account
   const account = localStorage.getItem('account')
   const parsedAccount = JSON.parse(account)
@@ -16,6 +19,19 @@ function SignIn() {
   const noAccountInLocalState = context.account ? Object.keys(context.account).length === 0 : true
 
   const hasUserAnAccount = !noAccountInLocalStorage || !noAccountInLocalState
+
+  const createAnAccount = ()=> {
+    const formData = new FormData(form.current)
+    const data = {
+      name: formData.get('name'),
+      email:formData.get('email'),
+      password:formData.get('password')
+    }
+    
+    localStorage.setItem('account',data)
+
+    
+  }
 
   const renderLogIn = () => {
     return (
@@ -52,7 +68,53 @@ Sign Up
     )
   }
   const renderCreateUserInfo = () => {
-    //todo create render view
+    return (
+      <form ref={form} className="flex flex-col gap-4 w-80">
+        <div className="flex flex-col gap-1">
+          <label htmlFor="name" className="text-sm font-light">
+            Your Name:
+          </label>
+          <input 
+          type="text"
+          id="name"
+          name="name"
+          defaultValue={parsedAccount?.name}
+          placeholder="Peter"
+          className="px-4 py-2 border border-black rounded-lg placeholder:font-light placeholder:text-sm placeholder:text-black/60 focus:outline-none "
+          />
+        </div>
+        <div className="flex flex-col gap-1 ">
+          <label htmlFor="email" className="text-sm font-light">Your Email</label>
+          <input 
+          type="text"
+          id="email"
+          name="email"
+          defaultValue={parsedAccount?.email}
+          placeholder="hi@helloworld.com"
+          className="px-4 py-2 border border-black ronded-lg placeholder:font-light placeholder:text-sm placeholder:text-black/60 focus:outline-none "
+          />
+        </div>
+        <div className="flex flex-col gap-1 ">
+          <label htmlFor="password" className="text-sm font-light">Your Password</label>
+          <input 
+          type="text"
+          id="password"
+          name="password"
+          defaultValue={parsedAccount?.password}
+          placeholder="*********"
+          className="px-4 py-2 border border-black ronded-lg placeholder:font-light placeholder:text-sm placeholder:text-black/60 focus:outline-none "
+          />
+        </div>
+        <Link to="/">
+          <button 
+          className="w-full py-3 text-white bg-black rounded-lg "
+          onClick={() => createAnAccount()}
+          >
+            Create
+          </button>
+        </Link>
+      </form>
+    )
   }
    const renderView = () => view === 'create-user-info' ? renderCreateUserInfo() : renderLogIn()
 
